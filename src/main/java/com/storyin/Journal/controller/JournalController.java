@@ -5,12 +5,11 @@ import com.storyin.Journal.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -42,6 +41,17 @@ public class JournalController {
         response.setSuccess(true);
         response.setStatusCode(201);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    };
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll(){
+        List<Journal> journals = new ArrayList<>();
+
+        for(Map.Entry<Integer, Journal> entry : journalDB.entrySet()){
+            journals.add(entry.getValue());
+        }
+
+        return new ResponseEntity<>(journals, HttpStatus.OK);
     };
 
 }

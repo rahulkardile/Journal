@@ -1,6 +1,8 @@
 package com.storyin.Journal.model;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -9,8 +11,10 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document
 public class Users {
 
+    @MongoId
     private String username;
     private String firstname;
     private String lastname;

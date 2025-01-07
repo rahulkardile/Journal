@@ -16,12 +16,12 @@ import java.util.Map;
 @RequestMapping("/api/journal")
 public class JournalController {
 
-    private Map<Integer, Journal> journalDB = new HashMap<>();
+    private Map<String, Journal> journalDB = new HashMap<>();
     @Autowired
     private Response response;
 
     JournalController() {
-        Journal journal = new Journal(1, "Need to buy milk!", "Go to shop and purchase the milk and after that return to home.", "Rahul Kardile");
+        Journal journal = new Journal("1", "Need to buy milk!", "Go to shop and purchase the milk and after that return to home.", "Rahul Kardile");
         journalDB.put(journal.getId(), journal);
     }
 
@@ -66,7 +66,7 @@ public class JournalController {
     public ResponseEntity<?> getAll() {
         List<Journal> journals = new ArrayList<>();
 
-        for (Map.Entry<Integer, Journal> entry : journalDB.entrySet()) {
+        for (Map.Entry<String, Journal> entry : journalDB.entrySet()) {
             journals.add(entry.getValue());
         }
 

@@ -74,9 +74,9 @@ public class JournalController {
     };
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateJournal(@RequestBody Journal journal, @PathVariable int id){
+    public ResponseEntity<?> updateJournal(@RequestBody Journal journal, @PathVariable int id) {
 
-        if(journalDB.containsKey(id)){
+        if (journalDB.containsKey(id)) {
             journalDB.put(journal.getId(), journal);
             response.setMessage("Journal updated successfully!");
             response.setStatusCode(201);
@@ -93,9 +93,9 @@ public class JournalController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteJournal(@PathVariable int id){
+    public ResponseEntity<?> deleteJournal(@PathVariable int id) {
 
-        if(journalDB.containsKey(id)){
+        if (journalDB.containsKey(id)) {
             response.setData(journalDB.get(id));
             journalDB.remove(id);
             response.setMessage("Journal deleted successfully!");

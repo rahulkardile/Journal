@@ -30,32 +30,39 @@ public class UserService {
     }
 
     public ResponseEntity<?> loginUser(Users user) {
-
         if (user == null) {
             response.setMessage("BAD REQUEST!");
+            response.setStatusCode(400);
+            response.setSuccess(false);
+            return ResponseEntity.status(400).body(response);
+        }
+
+        Optional<Users> loginUser = repo.findById(user.getUsername());
+        if (loginUser.isEmpty()) {
+            response.setMessage("User not found.");
             response.setStatusCode(404);
             response.setSuccess(false);
             return ResponseEntity.status(404).body(response);
         }
 
-        Optional<Users> loginUser = repo.findById(user.getUsername());
+        Users foundUser = loginUser.get();
 
-        if (!user.getPassword().equals(loginUser.get().getUsername())) {
+        if (!user.getPassword().matches(foundUser.getPassword())) {
             response.setMessage("User authentication failed.");
             response.setStatusCode(403);
             response.setSuccess(false);
             return ResponseEntity.status(403).body(response);
         }
 
-        if (!loginUser.get().isActive()) {
+        if (!foundUser.isActive()) {
             response.setMessage("User account is not active.");
             response.setStatusCode(403);
             response.setSuccess(false);
             return ResponseEntity.status(403).body(response);
         }
 
-        response.setMessage("Welcome Back " + loginUser.get().getUsername());
-        response.setData(loginUser.get());
+        response.setMessage("Welcome Back " + foundUser.getUsername());
+        response.setData(foundUser);
         response.setStatusCode(200);
         response.setSuccess(true);
 
@@ -64,9 +71,10 @@ public class UserService {
                 .secure(true)
                 .path("/")
                 .maxAge(24 * 60 * 60) // 1 day
+                .sameSite("Strict")
                 .build();
 
-        return  ResponseEntity.ok()
+        return ResponseEntity.ok()
                 .header("Set-Cookie", cookie.toString())
                 .body(response);
     }
